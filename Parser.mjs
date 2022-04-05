@@ -90,28 +90,6 @@ export class Parser {
                     name: token.value,
                 };
             }
-
-
-            if (token.type === TokenType.KEYWORD) {
-                var value = token.value
-                this.current++;
-                const variable = walk()
-                this.current++
-                const rightVar = walk()
-                this.current++
-
-                const declaration = {
-                    type: AST_TYPES.VariableDeclaration,
-                    id: variable,
-                    init: rightVar
-                }
-
-                return {
-                    type: AST_TYPES.VariableDeclaration,
-                    declarations: [declaration],
-                    kind: value,
-                };
-            }
             if (token.type !== TokenType.EOF) {
                 console.log(`curret ast.body.length:`, ast.body)
                 throw new TypeError(token.type);
