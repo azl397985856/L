@@ -1,4 +1,5 @@
 import { Scanner } from './Scanner.mjs'
+import { Parser } from './Parser.mjs'
 import fs from 'fs'
 const argv = process.argv.slice(2)
 
@@ -11,5 +12,7 @@ if (argv.length > 1) {
     const filename = argv[0]
     const source = fs.readFileSync(filename, 'utf8')
     const tokens = new Scanner(source).scan()
-    console.log(tokens)
+    const parser = new Parser(tokens)
+    const ast = parser.parse()
+    console.log(JSON.stringify(ast))
 }

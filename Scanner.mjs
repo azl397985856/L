@@ -9,7 +9,7 @@ export class Scanner {
     current = 0
     line = 1
     column = 1
-    keywords = new Set(['for', 'if', 'else', 'true', 'false', 'nil']);
+    keywords = new Set(['for', 'if', 'else', 'true', 'false', 'nil', 'const', 'let']);
     constructor(source) {
         this.source = source
     }
@@ -51,9 +51,9 @@ export class Scanner {
                 this.addToken(this.lookBehind('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                 break;
             case '/':
-                if (match('/')) {
+                if (this.match('/')) {
                     // 遇到了注释，我们直接跳过
-                    while (peek() != '\n' && this.current < this.source.length) advance();
+                    while (this.peek() != '\n' && this.current < this.source.length) this.advance();
                 } else {
                     addToken(TokenType.SLASH);
                 }
@@ -76,6 +76,13 @@ export class Scanner {
         }
     }
 
+    match(expected) {
+        if (this.current == this.source.length) return false;
+        if (this.source[this.current] != expected) return false;
+        this.current++;
+        return true;
+    }
+
     isDigit(c) {
         return c >= '0' && c <= '9';
     }
@@ -96,7 +103,8 @@ export class Scanner {
         if (!isKeyword) {
             this.addToken(TokenType.IDENTIFIER);
         } else {
-            throw new Error(`unexpected identifier for keyword ${text}`);
+            // throw new Error(`unexpected identifier for keyword ${text}`);
+            this.addToken(TokenType.KEYWORD);
         }
 
     }

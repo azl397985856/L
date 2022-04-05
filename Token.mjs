@@ -10,6 +10,7 @@ export class Token {
 export const TokenType = {
     "DOT": "DOT",
     EOF: 'EOF',
+    KEYWORD: "KEYWORD",
     WHITESPACE: 'WHITESPACE',
     NEWLINE: 'NEWLINE',
     IDENTIFIER: 'IDENTIFIER',

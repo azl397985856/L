@@ -2,6 +2,6 @@
 console.log("hello world")
 console.log("lucifer")
 
-const a = "lucifer"
+const a = 'lucifer'
 
-console.log(a)
+console.log(a + "x")

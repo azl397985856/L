@@ -6,3 +6,18 @@ implement a new programming language (L) from scratch
 # edit ./assets/index.js and then
 node index.mjs ./assets/index.js
 ```
+
+## Scanner
+
+- [乞丐版](./Scanner.mjs)
+
+## Parser
+
+- [无敌乞丐版](./Parser.mjs) 没有 CFG （context free grammer）的概念，直接就硬怼
+  那种。
+
+## TODO
+
+- Transformer
+- generator
+- 使用 L 在小程序中执行动态代码
