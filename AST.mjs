@@ -9,6 +9,7 @@ export const AST_TYPES = {
     "ReturnStatement": "ReturnStatement",
     "CallExpression": "CallExpression",
     "VariableDeclaration": "VariableDeclaration",
+    "VariableDeclarator": "VariableDeclarator",
     "VariableExpression": "VariableExpression",
     "AssignmentExpression": "AssignmentExpression",
     "BinaryExpression": "BinaryExpression",

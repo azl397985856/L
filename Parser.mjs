@@ -18,7 +18,7 @@ export class Parser {
             if (token.type === TokenType.STRING) {
                 this.current++;
                 return {
-                    type: AST_TYPES.LogicalExpression,
+                    type: AST_TYPES.LiteralExpression,
                     value: JSON.parse(token.value),
                     row: token.value
                 }
@@ -32,7 +32,7 @@ export class Parser {
                     const rightVar = walk.call(this)
 
                     const declaration = {
-                        type: AST_TYPES.VariableDeclaration,
+                        type: AST_TYPES.VariableDeclarator,
                         id: variable,
                         init: rightVar
                     }
@@ -44,6 +44,8 @@ export class Parser {
                     };
                 }
             }
+
+
 
 
             if (token.type === TokenType.IDENTIFIER) {
@@ -68,11 +70,12 @@ export class Parser {
                     this.current += 2
                     const args = []
                     while (tokens[this.current].type !== TokenType.RPAREN) {
-                        args.push({
-                            type: AST_TYPES.LiteralExpression,
-                            value: tokens[this.current].value
-                        })
-                        this.current += 1
+                        args.push(walk.call(this))
+                        if (tokens[this.current].type === TokenType.COMMA) {
+                            this.current++
+                        } else if (tokens[this.current].type !== TokenType.RPAREN) {
+                            throw new TypeError(tokens[this.current].type)
+                        }
                     }
                     this.current += 1
                     const callee = ast.body.pop()
@@ -81,19 +84,37 @@ export class Parser {
                         callee,
                         arguments: args
                     }
+                } else if (tokens[this.current + 1].type === TokenType.PLUS) {
+                    //  binary expression
+                    const left = {
+                        type: AST_TYPES.Identifier,
+                        name: tokens[this.current].value
+                    }
+                    this.current += 2;
+                    const right = walk.call(this)
+                    return {
+                        type: AST_TYPES.BinaryExpression,
+                        operator: '+',
+                        left,
+                        right,
+                    };
                 }
 
                 this.current++;
 
                 return {
-                    type: AST_TYPES.VariableExpression,
+                    type: AST_TYPES.Identifier,
                     name: token.value,
                 };
             }
+            if (token.type === TokenType.RPAREN) {
+                return {}
+            }
             if (token.type !== TokenType.EOF) {
-                console.log(`curret ast.body.length:`, ast.body)
+                console.log(`curret ast.body: `, ast.body)
                 throw new TypeError(token.type);
             }
+
             this.current += 1
         }
 
